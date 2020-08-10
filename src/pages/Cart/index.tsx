@@ -29,6 +29,7 @@ import formatValue from '../../utils/formatValue';
 
 interface Product {
   totalPrice: number;
+  totalItems: number;
 }
 
 const Cart: React.FC = () => {
@@ -57,7 +58,17 @@ const Cart: React.FC = () => {
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
-    return products.length;
+    const { totalItems } = products.reduce(
+      (acc, current) => {
+        acc.totalItems += current.quantity;
+        return acc;
+      },
+      {
+        totalItems: 0,
+      },
+    );
+
+    return totalItems;
   }, [products]);
 
   return (
